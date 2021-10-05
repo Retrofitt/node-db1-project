@@ -33,7 +33,8 @@ exports.checkAccountPayload = (req, res, next) => {
 exports.checkAccountNameUnique = async (req, res, next) => {
   const {name} = req.body
   const accounts = await Account.getAll()
-  if(accounts.indexOf(name.trim()) === -1){
+  const unique = accounts.filter(uniqueName=>uniqueName.name === name)
+  if(unique.length < 1){
     next()
   }else{
     res.status(400).json({
